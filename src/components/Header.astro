@@ -1,0 +1,122 @@
+---
+import Monogram from "./Monogram.astro";
+import FutureLink from "./FutureLink.astro";
+import TelegramIcon from "./TelegramIcon.astro";
+import { nav, contacts, FUTURE } from "../data/content";
+---
+<header id="header" class="header" data-rec="R-004,R-005,R-009">
+  <div class="header__bar container">
+    <a class="header__logo" href="#top" aria-label="Арт-Веб, на початок сторінки">
+      <Monogram size={32} />
+      <span class="header__name">Арт-Веб</span>
+    </a>
+
+    <nav class="header__nav" aria-label="Головне меню">
+      <ul class="header__list">
+        {nav.map((n) => <li><a class="header__link" href={n.href}>{n.label}</a></li>)}
+        <li><FutureLink note={FUTURE} class="header__link header__future">Портфоліо</FutureLink></li>
+      </ul>
+    </nav>
+
+    <a class="btn btn--sm header__cta" href={contacts.telegram} target="_blank" rel="noopener" data-rec="R-001">
+      <TelegramIcon />
+      <span>Написати</span>
+    </a>
+
+    <button class="header__burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Відкрити меню">
+      <span class="header__burger-lines" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <div id="menu" class="menu" role="dialog" aria-modal="true" aria-label="Меню" hidden>
+    <div class="menu__inner container">
+      <ul class="menu__list">
+        {nav.map((n) => <li><a class="menu__link" href={n.href}>{n.label}</a></li>)}
+        <li><FutureLink note={FUTURE} class="menu__link menu__future">Портфоліо</FutureLink></li>
+      </ul>
+      <div class="menu__contact">
+        <a class="btn menu__btn" href={contacts.telegram} target="_blank" rel="noopener">
+          <TelegramIcon />
+          <span>Написати в Telegram</span>
+        </a>
+        <a class="link-strong" href={contacts.emailHref}>{contacts.email}</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const burger = document.querySelector<HTMLButtonElement>(".header__burger");
+  const menu = document.getElementById("menu");
+  if (burger && menu) {
+    const focusables = () => [burger, ...menu.querySelectorAll<HTMLElement>("a[href], [tabindex='0']")];
+    const setOpen = (open: boolean) => {
+      menu.hidden = !open;
+      burger.setAttribute("aria-expanded", String(open));
+      burger.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
+      document.documentElement.classList.toggle("menu-open", open);
+      if (open) menu.querySelector<HTMLElement>("a[href]")?.focus();
+    };
+    burger.addEventListener("click", () => setOpen(menu.hidden));
+    menu.addEventListener("click", (e) => {
+      const a = (e.target as HTMLElement).closest("a[href^='#']");
+      if (a) setOpen(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (menu.hidden) return;
+      if (e.key === "Escape") { setOpen(false); burger.focus(); return; }
+      if (e.key === "Tab") {
+        const list = focusables();
+        const first = list[0], last = list[list.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches) setOpen(false); });
+  }
+</script>
+
+<style>
+  .header { position: fixed; inset: 0 0 auto 0; z-index: 50; background: var(--color-bg); }
+  .header::after { content: ""; position: absolute; inset: auto 0 0 0; height: 1px; background: var(--color-line); }
+  .header__bar { display: flex; align-items: center; gap: var(--s-4); height: var(--header-h); }
+  .header__logo { display: inline-flex; align-items: center; gap: var(--s-3); min-height: 44px; text-decoration: none; margin-right: auto; border-radius: var(--radius); }
+  .header__name { font: 800 1.25rem/1 var(--font-display); font-variation-settings: var(--shrp); letter-spacing: -0.02em; }
+  .header__nav { display: none; }
+  .header__list { display: flex; align-items: center; gap: var(--s-5); }
+  .header :global(.header__link) { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; font-size: 0.9375rem; text-decoration: none; color: var(--color-text); }
+  a.header__link:hover { text-decoration: underline; text-decoration-thickness: 2px; }
+  .header :global(.header__future) { color: var(--color-muted); text-decoration: underline dotted 1px; }
+  .header__cta { gap: var(--s-2); }
+  .header__burger { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--color-text); cursor: pointer; border-radius: var(--radius); }
+  .header__burger-lines, .header__burger-lines::before { display: block; width: 22px; height: 2px; background: currentColor; transition: transform var(--dur) var(--ease-out); }
+  .header__burger-lines { position: relative; transform: translateY(-4px); }
+  .header__burger-lines::before { content: ""; position: absolute; left: 0; top: 8px; }
+  .header__burger[aria-expanded="true"] .header__burger-lines { transform: translateY(0) rotate(45deg); }
+  .header__burger[aria-expanded="true"] .header__burger-lines::before { transform: translateY(-8px) rotate(-90deg); }
+  :global(html:not(.js)) .header__burger { display: none; }
+
+  .menu { position: fixed; inset: var(--header-h) 0 0 0; background: var(--color-bg); overflow-y: auto; }
+  .menu[hidden] { display: none; }
+  .menu__inner { display: grid; gap: var(--s-6); padding-block: var(--s-6) var(--s-7); }
+  .menu__list { display: grid; gap: var(--s-2); }
+  .menu :global(.menu__link) { display: inline-flex; min-height: 48px; align-items: center; font: 800 2rem/1.1 var(--font-display); font-variation-settings: var(--shrp); letter-spacing: -0.02em; text-decoration: none; color: var(--color-text); }
+  .menu :global(.menu__future) { color: var(--color-muted); }
+  .menu__contact { display: grid; gap: var(--s-4); justify-items: start; }
+  .menu__btn { width: 100%; }
+  :global(html.menu-open) { overflow: clip; }
+
+  @media (max-width: 359px) {
+    .header__name { display: none; }
+  }
+  @media (min-width: 1024px) {
+    .header__nav { display: block; }
+    .header__burger { display: none; }
+    .header__logo { margin-right: var(--s-6); }
+    .header__nav { margin-right: auto; }
+    .header__name { font-size: 1.375rem; }
+  }
+  @media (min-width: 1200px) {
+    .header__list { gap: var(--s-6); }
+  }
+</style>

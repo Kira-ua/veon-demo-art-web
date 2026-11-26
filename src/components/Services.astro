@@ -1,0 +1,88 @@
+---
+import FutureLink from "./FutureLink.astro";
+import TelegramIcon from "./TelegramIcon.astro";
+import { directions, contacts, FUTURE, nb } from "../data/content";
+---
+<section id="services" class="section services" aria-labelledby="services-title" data-rec="R-015">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="services-title">Що ми робимо</h2>
+      <p class="section__intro">П’ять напрямів зі стартовою ціною. Відкрийте свій, щоб побачити, з чого він складається.</p>
+    </div>
+
+    <ul class="services__list">
+      {directions.map((d) => (
+        <li>
+          <h3 class="visually-hidden" id={`svc-${d.id}`}>{d.name}</h3>
+          <details class="svc">
+            <summary class="svc__summary">
+              <span class="svc__name" aria-hidden="true">{d.name}</span><span class="visually-hidden">{d.name}:</span>
+              <span class="svc__price">
+                {d.priceNote && <span class="svc__price-note">{d.priceNote}</span>}
+                <span class="num">{nb(d.price)}</span>
+              </span>
+              <span class="svc__toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="svc__body">
+              <ul class="svc__items">
+                {d.items.map((it) => (
+                  <li class="svc__item"><span>{it.name}</span><span class="svc__item-price num">{nb(it.price)}</span></li>
+                ))}
+              </ul>
+              <div class="svc__actions">
+                <a class="btn btn--sm" href={contacts.telegram} target="_blank" rel="noopener"><TelegramIcon /><span>Написати в Telegram</span></a>
+                <FutureLink note={FUTURE} class="svc__more">{d.more}</FutureLink>
+              </div>
+            </div>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services__list { display: grid; gap: var(--s-2); }
+  @media (max-width: 1023px) { .services { padding-top: var(--s-7); } }
+  .svc__summary {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name toggle" "price toggle";
+    align-items: center; column-gap: var(--s-4); row-gap: var(--s-2);
+    padding-block: var(--s-4); cursor: pointer; list-style: none; border-radius: var(--radius);
+  }
+  .svc__summary::-webkit-details-marker { display: none; }
+  .svc__name { grid-area: name; display: block; font-family: var(--font-display); font-weight: 800; font-variation-settings: var(--shrp); overflow-wrap: break-word; min-width: 0; font-size: var(--fs-display); line-height: 1; letter-spacing: -0.03em; transition: color var(--dur-fast) var(--ease-out); }
+  .svc__price { grid-area: price; display: flex; align-items: baseline; gap: var(--s-2); font: 800 1.25rem/1.1 var(--font-display); font-variation-settings: var(--shrp); color: var(--color-accent); }
+  .svc__price-note { font: 600 0.9375rem/1.2 var(--font-body); color: var(--color-muted); }
+  .svc__toggle { grid-area: toggle; position: relative; width: 44px; height: 44px; border: 2px solid var(--color-text); border-radius: 50%; transition: transform var(--dur) var(--ease-out), background-color var(--dur-fast) var(--ease-out); }
+  .svc__toggle::before, .svc__toggle::after { content: ""; position: absolute; left: 50%; top: 50%; width: 16px; height: 2px; transform: translate(-50%, -50%); background: var(--color-text); transition: background-color var(--dur-fast) var(--ease-out); }
+  .svc__toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .svc[open] .svc__toggle { transform: rotate(45deg); }
+  .svc__summary:hover .svc__toggle { background: var(--color-text); }
+  .svc__summary:hover .svc__toggle::before, .svc__summary:hover .svc__toggle::after { background: var(--color-bg); }
+  .svc__summary:hover .svc__name { color: var(--color-accent); }
+
+  .svc__body { display: grid; gap: var(--s-5); padding: var(--s-2) 0 var(--s-6); }
+  .svc[open] .svc__body { animation: svc-in var(--dur) var(--ease-out) both; }
+  .svc__items { display: grid; gap: var(--s-3); max-width: 40rem; }
+  .svc__item { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4); }
+  .svc__item-price { font-weight: 600; }
+  .svc__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-4) var(--s-6); }
+  .services :global(.svc__more) { min-height: 44px; font-weight: 600; }
+
+  @media (min-width: 768px) {
+    .svc__summary { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "name price toggle"; column-gap: var(--s-6); padding-block: var(--s-5); }
+    .svc__price { font-size: var(--fs-h3); justify-self: end; }
+    .svc__body { grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
+  }
+  @media (min-width: 1024px) {
+    .svc__toggle { width: 56px; height: 56px; }
+    .svc__toggle::before, .svc__toggle::after { width: 20px; }
+    .svc__body { padding-bottom: var(--s-7); }
+  }
+
+  @keyframes svc-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .svc[open] .svc__body { animation: none; }
+    .svc__toggle { transition: none; }
+  }
+</style>

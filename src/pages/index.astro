@@ -1,0 +1,44 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import Prices from "../components/Prices.astro";
+import Shops from "../components/Shops.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "Створення сайтів у Львові від 7 500 грн — Арт-Веб";
+const description = "Розробка, просування, контекстна реклама, підтримка і дизайн сайтів у Львові з 2008 року. Сайт-візитка або лендінг від 7 500 грн. Напишіть нам у Telegram.";
+
+// R-103: valid LocalBusiness markup. No telephone (no real number), no sameAs (R-009), no rating (R-010), no url until the domain is decided.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Арт-Веб",
+  description,
+  email: "admin@art-web.com.ua",
+  foundingDate: "2008",
+  priceRange: "від 7 500 грн",
+  areaServed: { "@type": "City", name: "Львів" },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "вул. Володимира Великого, 16",
+    addressLocality: "Львів",
+    postalCode: "79000",
+    addressCountry: "UA",
+  },
+};
+---
+<Base lang="uk" title={title} description={description} rec="R-006,R-013,R-206,R-207">
+  <script slot="head" type="application/ld+json" data-rec="R-103" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Services />
+  <Prices />
+  <Shops />
+  <About />
+  <Contact />
+  <Footer slot="footer" />
+</Base>

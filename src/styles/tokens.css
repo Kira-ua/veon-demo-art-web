@@ -1,0 +1,97 @@
+/* Hallmark · shape: poster-index (typographic hero, priced service poster, comparison table, one-sentence about, red contact field) · genre: editorial · theme: custom · job: hire · idea: "Червоне і чорне з монограми AW: чорним — що робимо, червоним — ціна і шлях до розмови" · vibe: "двоколірний друк, точна сітка, гучна ціна"
+ * paper: #F5F6F7 · accent: #E5252F / #C1121F · display: Geologica · body: Fixel Text · hero: триярусний H1 перекриває червоний трикутник монограми з ціною, обрізаний краєм вікна; на телефоні — червоний клин внизу · nav: fixed opaque bar, 6 items + one Telegram button, full-screen menu on phone · footer: light second surface, channels, anchors, future pages, page passport · imagery: none (typography and the monogram triangle) · signature: red triangle «A» carrying the price; page passport measured in the visitor's browser
+ * axes: light/geometric-heavy/chromatic-red · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: imagery, no client photos exist (portfolio outdated, R-008) — carried by the monogram triangle and price typography instead of stand-in pictures */
+/* Hallmark · waive 39b · .btn 56px, contact button 64px · concept.md (Дизайн-система: кнопки 56 крупная / 48) asks for a large primary Telegram target; buttons in the header stay 44px */
+/* Hallmark · answer 49 · «Обговорити проєкт у Telegram» may wrap at 320px on purpose: nowrap would overflow the 280px column */
+/* Hallmark · answer 25 · .action-row__text is a one-line display caption next to a button, not prose */
+/* Hallmark · waive 49b · a.contact__map and footer address wrap to 2 lines at 320px · the full postal address (37 characters) cannot sit on one line in a 280px column; nowrap would overflow */
+/* Client design tokens: from design/concept.md (veon-concept: colors, fonts). */
+
+@font-face {
+  font-family: "Geologica";
+  src: url("/fonts/geologica-cyrillic.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Geologica";
+  src: url("/fonts/geologica-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Fixel Text";
+  src: url("/fonts/fixel-text-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fixel Text";
+  src: url("/fonts/fixel-text-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+/* Metric-adjusted fallbacks: keep line breaks close to the web fonts while they load. */
+@font-face { font-family: "Geologica Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"); font-weight: 800; size-adjust: 103%; ascent-override: 95%; descent-override: 27%; line-gap-override: 0%; }
+@font-face { font-family: "Geologica Fallback"; src: local("Arial"), local("Helvetica"); font-weight: 400; size-adjust: 100%; ascent-override: 97%; descent-override: 27%; line-gap-override: 0%; }
+@font-face { font-family: "Fixel Fallback"; src: local("Arial"), local("Helvetica"); font-weight: 400; size-adjust: 103%; ascent-override: 87%; descent-override: 18%; line-gap-override: 0%; }
+@font-face { font-family: "Fixel Fallback"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold"); font-weight: 600; size-adjust: 98%; ascent-override: 91%; descent-override: 19%; line-gap-override: 0%; }
+
+:root {
+  /* colour roles */
+  --color-bg: #F5F6F7;        /* холодний папір */
+  --color-surface: #E9EBED;   /* друга поверхня: ціни, футер */
+  --color-text: #121317;      /* чорнило, чорна «W» */
+  --color-muted: #55585F;     /* вторинний текст */
+  --color-line: #CDD0D4;      /* лінії рядків таблиці */
+  --color-brand: #E5252F;     /* фірмовий червоний «A»: лише графіка і текст від 24 px */
+  --color-accent: #C1121F;    /* червона фарба для набору: кнопки, ціни, поле контактів */
+  --color-accent-ink: var(--color-bg); /* text on the red fill */
+  --color-focus: var(--color-text);
+
+  /* type */
+  --font-display: "Geologica", "Geologica Fallback", system-ui, sans-serif;
+  --font-body: "Fixel Text", "Fixel Fallback", system-ui, sans-serif;
+  --shrp: "SHRP" 100;
+  --fs-h1: clamp(2.5rem, 1.2rem + 6.6vw, 8rem);
+  --fs-display: clamp(2.125rem, 1.2rem + 3.6vw, 4.5rem);
+  --fs-h2: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  --fs-h3: clamp(1.375rem, 1.1rem + 1.1vw, 1.75rem);
+  --fs-lead: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.875rem;
+
+  /* spacing: 8-based scale */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px;
+  --s-6: 40px; --s-7: 64px; --s-8: 96px; --s-9: 144px;
+  --section-gap: var(--s-8);
+
+  /* layout */
+  --space: 20px;              /* page gutter: 20 / 40 / 80 */
+  --col-gap: 16px;
+  --container: 1280px;
+  --header-h: 56px;
+  --radius: 2px;
+
+  /* motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast: 120ms;
+  --dur: 220ms;
+  --dur-grow: 700ms;
+}
+@media (min-width: 768px) {
+  :root { --space: 40px; --col-gap: 24px; }
+}
+@media (min-width: 1024px) {
+  :root { --header-h: 64px; --section-gap: var(--s-9); }
+}
+@media (min-width: 1360px) {
+  :root { --space: 80px; }
+}

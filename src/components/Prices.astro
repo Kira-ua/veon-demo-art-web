@@ -1,0 +1,76 @@
+---
+import FutureLink from "./FutureLink.astro";
+import TelegramIcon from "./TelegramIcon.astro";
+import { siteTypes, contacts, FUTURE, nb } from "../data/content";
+---
+<section id="prices" class="section prices" aria-labelledby="prices-title" data-rec="R-015">
+  <div class="container">
+    <div class="section__head">
+      <h2 id="prices-title">Типи сайтів і ціни</h2>
+      <p class="section__intro">Два формати: готове рішення або індивідуальний проєкт. Ціни стартові, у гривнях.</p>
+    </div>
+
+    <table class="ptable">
+      <caption class="visually-hidden">Стартові ціни на сайти: готові рішення та індивідуальні проєкти, грн</caption>
+      <thead>
+        <tr>
+          <th scope="col">Тип сайту</th>
+          <th scope="col">Готові рішення</th>
+          <th scope="col">Індивідуальні проєкти</th>
+        </tr>
+      </thead>
+      <tbody>
+        {siteTypes.map((t, i) => (
+          <tr data-reveal style={`--i:${i}`}>
+            <th scope="row">{t.name}</th>
+            <td data-label="Готове рішення">
+              {t.ready ? <span class="ptable__sum num"><span class="ptable__from">від</span> {nb(t.ready)}</span> : <span class="ptable__none"><span aria-hidden="true">—</span><span class="visually-hidden">немає в прайсі</span></span>}
+            </td>
+            <td data-label="Індивідуальний">
+              {t.custom ? <span class="ptable__sum num"><span class="ptable__from">від</span> {nb(t.custom)}</span> : <span class="ptable__none"><span aria-hidden="true">—</span><span class="visually-hidden">немає в прайсі</span></span>}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <div class="action-row">
+      <p class="action-row__text">Порахувати точно — напишіть нам</p>
+      <a class="btn" href={contacts.telegram} target="_blank" rel="noopener">
+        <TelegramIcon />
+        <span>Обговорити в Telegram</span>
+      </a>
+      <FutureLink note={FUTURE} class="prices__all">Усі ціни і калькулятор</FutureLink>
+    </div>
+  </div>
+</section>
+
+<style>
+  .prices { background: var(--color-surface); }
+  .ptable { width: 100%; border-collapse: collapse; }
+  .ptable thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .ptable tr[data-reveal] { --reveal-delay: calc(var(--i) * 30ms); --reveal-shift: 8px; }
+  .ptable tbody tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--col-gap); row-gap: var(--s-2); padding-block: var(--s-5); border-top: 1px solid var(--color-line); }
+  .ptable tbody tr:last-child { border-bottom: 1px solid var(--color-line); }
+  .ptable tbody th { grid-column: 1 / -1; text-align: left; font: 800 var(--fs-h3)/1.15 var(--font-display); font-variation-settings: var(--shrp); letter-spacing: -0.01em; }
+  .ptable td { display: grid; gap: var(--s-1); padding: 0; }
+  .ptable td::before { content: attr(data-label); font-size: var(--fs-small); font-weight: 600; color: var(--color-muted); }
+  .ptable__sum { font: 800 clamp(1.5rem, 1rem + 2.2vw, 3rem)/1 var(--font-display); font-variant-numeric: tabular-nums lining-nums; font-variation-settings: var(--shrp); letter-spacing: -0.02em; color: var(--color-accent); }
+  .ptable__from { font: 600 0.9375rem/1 var(--font-body); color: var(--color-muted); letter-spacing: 0; }
+  .ptable__none { font: 800 1.5rem/1 var(--font-display); color: var(--color-muted); }
+  .prices :global(.prices__all) { min-height: 44px; font-weight: 600; }
+
+  @media (min-width: 768px) {
+    .ptable thead { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; }
+    .ptable thead tr { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 3.5fr) minmax(0, 3.5fr); column-gap: var(--col-gap); padding-bottom: var(--s-4); }
+    .ptable thead th { text-align: left; font-size: var(--fs-small); font-weight: 600; color: var(--color-muted); }
+    .ptable tbody tr { grid-template-columns: minmax(0, 5fr) minmax(0, 3.5fr) minmax(0, 3.5fr); align-items: baseline; padding-block: var(--s-5); }
+    .ptable tbody th { grid-column: auto; }
+    .ptable td { display: block; }
+    .ptable td::before { content: none; }
+    .ptable tr[data-reveal] { --reveal-delay: calc(var(--i) * 40ms); --reveal-shift: 12px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ptable tr[data-reveal] { --reveal-delay: 0ms; --reveal-shift: 0px; }
+  }
+</style>

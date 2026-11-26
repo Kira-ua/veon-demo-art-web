@@ -1,0 +1,36 @@
+---
+import FutureLink from "./FutureLink.astro";
+import { FUTURE } from "../data/content";
+---
+<section id="about" class="section about" aria-labelledby="about-title" data-rec="R-012">
+  <div class="container about__grid">
+    <h2 id="about-title" class="about__title">Про студію</h2>
+    <p class="about__text">
+      Працюємо з <strong>2008&nbsp;року</strong> і&nbsp;реалізували <strong>понад 1000&nbsp;проєктів</strong>.
+      Наш офіс — у&nbsp;Львові, на вул.&nbsp;Володимира Великого,&nbsp;16: тут працює <strong>10&nbsp;людей</strong>.
+      На підтримці в&nbsp;нас <strong>понад 100&nbsp;проєктів</strong>, а&nbsp;<strong>кожен четвертий клієнт</strong> приходить за&nbsp;рекомендацією.
+    </p>
+    <p class="about__more">
+      <FutureLink note={FUTURE} class="about__portfolio">Портфоліо — розділ оновлюється</FutureLink>
+    </p>
+  </div>
+</section>
+
+<style>
+  .about__grid { display: grid; gap: var(--s-6); }
+  .about__title { font-size: var(--fs-h3); }
+  .about__text {
+    font: 400 clamp(1.5rem, 1rem + 1.9vw, 2.5rem)/1.25 var(--font-display);
+    font-variation-settings: var(--shrp);
+    letter-spacing: -0.015em;
+    max-width: 30em;
+  }
+  .about__text strong { font-weight: 800; }
+  .about :global(.about__portfolio) { min-height: 44px; font-weight: 600; }
+
+  @media (min-width: 1024px) {
+    .about__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+    .about__title { grid-column: 1 / span 3; padding-top: 0.5em; }
+    .about__text, .about__more { grid-column: 4 / -1; }
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+// Simplified vector of the AW monogram (C-009): red triangle «A», black «W» rising to an arrow.
+// Provisional redraw: the client's vector file is requested (concept, client_decision).
+interface Props { size?: number; }
+const { size = 40 } = Astro.props;
+---
+<svg class="monogram" viewBox="0 0 48 40" width={Math.round(size * 1.2)} height={size} aria-hidden="true" focusable="false" data-rec="R-202,R-203">
+  <path d="M1 39 15.5 3 30 39z" fill="var(--color-brand)" />
+  <path d="m19.5 12 6.5 25 5.5-15 5.5 15 6-26" fill="none" stroke="var(--color-text)" stroke-width="4.2" stroke-linejoin="miter" stroke-linecap="square" />
+  <path d="m39 9 4.5-7 4 7.5z" fill="var(--color-text)" />
+</svg>
